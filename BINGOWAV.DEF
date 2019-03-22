@@ -1,0 +1,11 @@
+;-------------------------------------
+; BINGOWAV.DEF module definition file
+;-------------------------------------
+
+LIBRARY BINGOWAV
+
+DESCRIPTION   'OS/2 PM Bingo - WAVE DLL'
+PROTMODE
+
+CODE LOADONCALL
+DATA LOADONCALL

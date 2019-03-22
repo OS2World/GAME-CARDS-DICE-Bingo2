@@ -1,0 +1,9 @@
+;-------------------------------------
+; BINGO.DEF module definition file
+;-------------------------------------
+
+NAME          BINGO WINDOWAPI
+
+DESCRIPTION   'OS/2 PM Bingo - (c) IBM Corp 1993'
+PROTMODE
+STACKSIZE     655360

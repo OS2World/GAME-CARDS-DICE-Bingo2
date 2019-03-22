@@ -1,0 +1,374 @@
+#include <os2.h>
+#include "bingo.h"
+#include "bingodlg.h"                  /* see BINGODLG.DLG                    */
+
+/******************************************************************************/
+/* Standard menu bar definition for client window.                            */
+/******************************************************************************/
+
+MENU   idFrameWindow
+  {
+   SUBMENU "~File",                       IDM_FILE
+    {
+     MENUITEM "~New         \tF2",        IDM_START
+     MENUITEM "~Quit        \tCtrl+Q",    IDM_STOP
+     MENUITEM SEPARATOR
+     MENUITEM "~Pause       \tF4",        IDM_PAUSE
+     MENUITEM "~Next number \tF5",        IDM_NEXTNUM
+     MENUITEM SEPARATOR
+     MENUITEM "Sco~res...  \tCtrl+R",     IDM_SCORE
+     MENUITEM "~High scores... \tCtrl+H",     IDM_HISCORES
+     MENUITEM "~Print...   \tCtrl+P",     IDM_PRINT
+     MENUITEM SEPARATOR
+     MENUITEM "E~xit       \tF3",         IDM_EXIT
+    }
+   SUBMENU "~Options",                    IDM_OPTIONS
+    {
+     MENUITEM "~Auto play   \tCtrl+A",    IDM_AUTOPLAY
+     MENUITEM "So~und       \tCtrl+U",    IDM_SOUND
+     MENUITEM "~Mark all    \tCtrl+M",    IDM_MARKALL
+     MENUITEM "Cha~tter     \tCtrl+T",    IDM_CHATTER
+     MENUITEM SEPARATOR
+     MENUITEM "Other ~Cards... \tCtrl+C", IDM_CARDS
+     MENUITEM SEPARATOR
+     MENUITEM "~Games...    \tCtrl+G",    IDM_GAMES
+     MENUITEM "~Settings... \tCtrl+S",    IDM_SETTINGS
+     MENUITEM "~Fonts...    \tCtrl+F",    IDM_FONT
+    }
+   SUBMENU "~Help",                      IDM_HELP
+    {
+     MENUITEM    "~Using Help",          IDM_USINGHELP
+     MENUITEM    "~General Help",        SC_HELPEXTENDED, MIS_SYSCOMMAND
+     MENUITEM    "~Keys Help",           SC_HELPKEYS,     MIS_SYSCOMMAND
+     MENUITEM    "Help ~Index",          SC_HELPINDEX,    MIS_SYSCOMMAND
+     MENUITEM SEPARATOR
+     MENUITEM    "~Product Information", IDM_HELPPRODINFO
+    }
+  }
+
+/******************************************************************************/
+/* Standard accelerator table for menu bar choices.                           */
+/******************************************************************************/
+
+ACCELTABLE idFrameWindow
+ {
+  /* VK_F1 is for Help */
+  VK_F2,   IDM_START,    VIRTUALKEY
+  VK_F3,   IDM_EXIT,     VIRTUALKEY
+  VK_F4,   IDM_PAUSE,    VIRTUALKEY
+  VK_F5,   IDM_NEXTNUM,  VIRTUALKEY
+  "a",     IDM_AUTOPLAY, CHAR,       CONTROL
+  "b",     IDM_BINGO,    CHAR,       CONTROL
+  "c",     IDM_CARDS,    CHAR,       CONTROL
+  "f",     IDM_FONT,     CHAR,       CONTROL
+  "g",     IDM_GAMES,    CHAR,       CONTROL
+  "h",     IDM_HISCORES, CHAR,       CONTROL
+  "m",     IDM_MARKALL,  CHAR,       CONTROL
+  "p",     IDM_PRINT,    CHAR,       CONTROL
+  "q",     IDM_STOP,     CHAR,       CONTROL
+  "r",     IDM_SCORE,    CHAR,       CONTROL
+  "s",     IDM_SETTINGS, CHAR,       CONTROL
+  "t",     IDM_CHATTER,  CHAR,       CONTROL
+  "u",     IDM_SOUND,    CHAR,       CONTROL
+ }
+
+/******************************************************************************/
+/* String table for most text displayed in application controls. Use          */
+/* WinLoadString in window procedure to retrieve these.                       */
+/******************************************************************************/
+
+STRINGTABLE
+  {
+   IDS_VERSION         "Version 1.44"
+   IDS_MONEY           "$"
+   IDS_TITLEBAR        "Bingo Board"
+   IDS_BINGOTITLE      "Card No:"
+   IDS_HALLTITLE       "Hall Card No:"
+   IDS_HELPTITLE       "Bingo Help"
+   IDS_HELPNAME        "BINGO.HLP"
+   IDS_ININAME         "BINGO.INI"
+   IDS_INIHISCORES     "BINGOHS.INI"
+   IDS_EXIT            "Exit Bingo"
+   IDS_EXITPROMPT      "Game still in progress. Are you sure you want to exit Bingo?"
+   IDS_OTHERNAME       "Other"
+   IDS_HUMAN           "Player"
+   IDS_BINGO           "Bingo!"
+   IDS_BINGOTEXT       "Select New under File to start a new game."
+   IDS_START           "Start"
+   IDS_STARTTEXT       "Game still in progress. Click OK to start new game."
+   IDS_TIMERBOX        "Let's play Bingo!"
+   IDS_TIMERTEXT       "Do you want to start a new game?"
+   IDS_NEWCARDS        "New game"
+   IDS_NEWCARDSTEXT    "Do you want a new set of bingo cards?"
+   IDS_PAUSE           "Pause"
+   IDS_PAUSETEXT       "Game paused. Click OK to resume."
+   IDS_GAME            "Game:"
+   IDS_PREGAME         "Game not started."
+   IDS_INPROGRESS      "Game in progress."
+   IDS_GAMEOVER        "Game over."
+   IDS_BINGOSHOWN      "Bingo shown."
+   IDS_PRIZETEXT       "Prize:"
+   IDS_STOP            "Quit Game"
+   IDS_STOPTEXT        "Game in progress will be ended. Are you sure you want to quit?"
+   IDS_SHARETITLE      "Bingo/2 (Unregistered version)"
+   IDS_SHAREREGISTER   "Please register this software to get rid of getting this reminder."
+   IDS_SHAREORDER      "Please use the ORDER.FRM found in this package for registration instructions."
+/* IDS_REGISTERED      "(Registered Version)" */
+   IDS_REGISTERED      ""
+   IDS_SHAREWARE       "(Unregistered Version)"
+   IDS_PRINTERROR      "Print Error"
+   IDS_ERROR_PRINT_1   "DosAllocMem() failed."
+   IDS_ERROR_PRINT_2   "SplEnumQueue() failed. Return code is"
+   IDS_ERROR_PRINT_3   "DevOpenDC() failed. Return code is"
+   IDS_ERROR_PRINT_4   "GpiCreatePS() failed. Return code is"
+   IDS_PRINT_STATUS    "Printing bingo card number"
+   IDS_PRINTTEXT       "Print"
+   IDS_STOPPRINT       "Are you sure you want to cancel the print job?"
+   IDS_AUDIOERROR      "Audio Device Error"
+   IDS_AUDIOOPENERR    "Unable to open audio device. Return code is"
+   IDS_AUDIOLOADERR    "Unable to load sound file. Return code is"
+   IDS_AUDIOPLAYERR    "Unable to play sound file. Return code is"
+   IDS_FONTERROR       "Font Error"
+   IDS_ERROR_FONT_1    "Font error: GpiQueryFonts() failed. Return code is"
+   IDS_ERROR_MEMORY    "Memory error: malloc() failed."
+   IDS_NOBINGO         "Game over. No bingo was found and all numbers have been drawn."
+   IDS_CHAT_WAITPLAYER "You are waiting for"
+   IDS_CHAT_WAITOTHER  "Someone is waiting for"
+   IDS_CHAT_WAITCLOSE  "Almost got it, that was close!"
+   IDS_CHAT_NUMBERLEFT "numbers left to be called."
+   IDS_CHAT_LETTER     "Wow, all numbers have been called for letter"
+   IDS_PROFILEERROR    "Profile Error"
+   IDS_PROFILE_SETTING "Error loading initialization profile, BINGO.INI."
+   IDS_PROFILE_HISCORE "Error loading high score profile, BINGOHS.INI."
+   IDS_HELPERROR       "Help Error"
+   IDS_NO_HELP         "Help not available!"
+   IDS_NOMONEY         "Scores"
+   IDS_NOMONEYTEXT     "No more money. Reset scores? (If No, Bingo/2 will end.)"
+
+   IDS_X               "X"
+   IDS_Y               "Y"
+   IDS_Z               "Z"
+   IDS_M               "M"
+   IDS_N               "N"
+   IDS_H               "H"
+   IDS_DIAMOND         "Diamond"
+   IDS_4CORNERS        "Four corners"
+   IDS_CENTER          "Center (+)"
+   IDS_INSQUARE        "Inside square"
+   IDS_OUTSQUARE       "Outside square"
+   IDS_ALLNO           "All numbers"
+   IDS_CLASSIC         "Classic"
+   IDS_T               "T"
+   IDS_LUCKY7          "Lucky 7"
+   IDS_HARDAWAY        "Hardaway"
+  }
+
+/***************************************************************************/
+/* Help table definitions. HELPTABLE relates to all top-level windows and  */
+/* HELPSUBTABLE for child window help.                                     */
+/***************************************************************************/
+
+HELPTABLE IDH_TABLE_MAIN
+  {
+   HELPITEM idFrameWindow, IDH_SUBTABLE_MAIN,      IDH_MAIN
+   HELPITEM IDD_START,     IDH_SUBTABLE_START,     IDH_START
+   HELPITEM IDD_STOP,      IDH_SUBTABLE_STOP,      IDH_STOP
+   HELPITEM IDD_TIMER,     IDH_SUBTABLE_TIMER,     IDH_TIMER
+   HELPITEM IDD_NEWCARDS,  IDH_SUBTABLE_NEWCARDS,  IDH_NEWCARDS
+   HELPITEM IDD_OPTIONS,   IDH_SUBTABLE_OPTIONS,   IDH_OPTIONS
+   HELPITEM IDD_SETTINGS,  IDH_SUBTABLE_SETTINGS,  IDH_SETTINGS
+   HELPITEM IDD_SCORE,     IDH_SUBTABLE_SCORE,     IDH_SCORE
+   HELPITEM IDD_PRINT,     IDH_SUBTABLE_PRINT,     IDH_PRINT
+   HELPITEM IDD_FONT,      IDH_SUBTABLE_FONT,      IDH_FONT
+   HELPITEM IDD_STOPPRINT, IDH_SUBTABLE_STOPPRINT, IDH_STOPPRINT
+   HELPITEM IDD_NOBINGO,   IDH_SUBTABLE_NOBINGO,   IDH_NOBINGO
+   HELPITEM IDD_CARDS,     IDH_SUBTABLE_CARDS,     IDH_CARDS
+   HELPITEM IDD_BINGOCARD, IDH_SUBTABLE_BINGOCARD, IDH_BINGOCARD
+   HELPITEM IDD_CHATTER,   IDH_SUBTABLE_CHATTER,   IDH_CHATTER
+   HELPITEM IDD_HISCORES,  IDH_SUBTABLE_HISCORES,  IDH_HISCORES
+   HELPITEM IDD_NOMONEY,   IDH_SUBTABLE_NOMONEY,   IDH_NOMONEY
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_MAIN
+  {
+   HELPSUBITEM IDM_FILE,         IDH_MENU_FILE
+   HELPSUBITEM IDM_START,        IDH_MENU_START
+   HELPSUBITEM IDM_STOP,         IDH_MENU_STOP
+   HELPSUBITEM IDM_PAUSE,        IDH_MENU_PAUSE
+   HELPSUBITEM IDM_NEXTNUM,      IDH_MENU_NEXTNUM
+   HELPSUBITEM IDM_AUTOPLAY,     IDH_MENU_AUTOPLAY
+   HELPSUBITEM IDM_OPTIONS,      IDH_MENU_OPTIONS
+   HELPSUBITEM IDM_SETTINGS,     IDH_MENU_SETTINGS
+   HELPSUBITEM IDM_SCORE,        IDH_MENU_SCORE
+   HELPSUBITEM IDM_GAMES,        IDH_MENU_GAMES
+   HELPSUBITEM IDM_MARKALL,      IDH_MENU_MARKALL
+   HELPSUBITEM IDM_SOUND,        IDH_MENU_SOUND
+   HELPSUBITEM IDM_EXIT,         IDH_MENU_EXIT
+   HELPSUBITEM IDM_PRINT,        IDH_MENU_PRINT
+   HELPSUBITEM IDM_FONT,         IDH_MENU_FONT
+   HELPSUBITEM IDM_CARDS,        IDH_MENU_CARDS
+   HELPSUBITEM IDM_CHATTER,      IDH_MENU_CHATTER
+   HELPSUBITEM IDM_HISCORES,     IDH_MENU_HISCORES
+
+   HELPSUBITEM IDM_HELP,         IDH_MENU_HELP
+   HELPSUBITEM IDM_USINGHELP,    IDH_MENU_HELPUSING
+   HELPSUBITEM SC_HELPINDEX,     IDH_MENU_HELPINDEX
+   HELPSUBITEM SC_HELPEXTENDED,  IDH_MENU_HELPGENERAL
+   HELPSUBITEM SC_HELPKEYS,      IDH_MENU_HELPKEYS
+   HELPSUBITEM IDM_HELPPRODINFO, IDH_MENU_HELPPRODINFO
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_START
+  {
+    HELPSUBITEM IDD_START,       IDH_START
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_STOP
+  {
+    HELPSUBITEM IDD_STOP,        IDH_STOP
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_TIMER
+  {
+    HELPSUBITEM IDD_TIMER,       IDH_TIMER
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_NEWCARDS
+  {
+    HELPSUBITEM IDD_NEWCARDS,    IDH_NEWCARDS
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_OPTIONS
+  {
+   HELPSUBITEM IDD_OPTIONS,      IDH_OPTIONS
+   HELPSUBITEM IDE_USERNAME,     IDH_OPTIONS_USERNAME
+   HELPSUBITEM IDC_GAMETYPE,     IDH_OPTIONS_GAMETYPE
+   HELPSUBITEM IDC_NUMCARDS,     IDH_OPTIONS_NUMCARDS
+   HELPSUBITEM IDC_NUMPLAYERS,   IDH_OPTIONS_NUMPLAYERS
+   HELPSUBITEM IDP_DEFAULTS,     IDH_OPTIONS_DEFAULTS
+   HELPSUBITEM IDP_OPTHELP,      IDH_OPTIONS_HELP
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_SETTINGS
+  {
+   HELPSUBITEM IDD_SETTINGS,     IDH_SETTINGS
+   HELPSUBITEM IDV_COLOR,        IDH_SETTINGS_COLOR
+   HELPSUBITEM IDV_POINTER,      IDH_SETTINGS_POINTER
+   HELPSUBITEM IDC_DRAWTIME,     IDH_SETTINGS_DRAWTIME
+   HELPSUBITEM IDB_NEWCARDS,     IDH_SETTINGS_NEWCARDS
+   HELPSUBITEM IDB_OLDCARDS,     IDH_SETTINGS_NEWCARDS
+   HELPSUBITEM IDB_PROMPT,       IDH_SETTINGS_NEWCARDS
+   HELPSUBITEM IDC_MARKALL,      IDH_SETTINGS_MARKALL
+   HELPSUBITEM IDC_SOUND,        IDH_SETTINGS_SOUND
+   HELPSUBITEM IDC_SHOWINIT,     IDH_SETTINGS_SHOWINIT
+   HELPSUBITEM IDC_PROMPT,       IDH_SETTINGS_GAMEPROMPT
+   HELPSUBITEM IDC_CHATTER,      IDH_SETTINGS_CHATTER
+   HELPSUBITEM IDC_AUTOPLAY,     IDH_SETTINGS_CHATTER
+   HELPSUBITEM IDC_3DEFFECTS,    IDH_SETTINGS_3DEFFECTS
+   HELPSUBITEM IDB_HORIZONTAL,   IDH_SETTINGS_BOARDTYPE
+   HELPSUBITEM IDB_VERTICAL,     IDH_SETTINGS_BOARDTYPE
+   HELPSUBITEM IDP_DEFAULTS,     IDH_SETTINGS_DEFAULTS
+   HELPSUBITEM IDP_SETHELP,      IDH_SETTINGS_HELP
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_SCORE
+  {
+   HELPSUBITEM IDD_SCORE,        IDH_SCORE
+   HELPSUBITEM IDP_RESET,        IDH_SCORE_RESET
+   HELPSUBITEM IDP_SCOREHELP,    IDH_SCORE_HELP
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_HISCORES
+  {
+   HELPSUBITEM IDD_HISCORES,     IDH_HISCORES
+   HELPSUBITEM IDP_RESET,        IDH_HISCORES_RESET
+   HELPSUBITEM IDP_HIHELP,       IDH_HISCORES_HELP
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_PRINT
+  {
+    HELPSUBITEM IDD_PRINT,       IDH_PRINT
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_FONT
+  {
+    HELPSUBITEM IDD_FONT,        IDH_FONT
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_STOPPRINT
+  {
+    HELPSUBITEM IDD_STOPPRINT,   IDH_STOPPRINT
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_NOBINGO
+  {
+    HELPSUBITEM IDD_NOBINGO,     IDH_NOBINGO
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_CARDS
+  {
+    HELPSUBITEM IDD_CARDS,       IDH_CARDS
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_BINGOCARD
+  {
+    HELPSUBITEM IDD_BINGOCARD,   IDH_BINGOCARD
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_CHATTER
+  {
+    HELPSUBITEM IDD_CHATTER,     IDH_CHATTER
+  }
+
+HELPSUBTABLE IDH_SUBTABLE_NOMONEY
+  {
+    HELPSUBITEM IDD_NOMONEY,     IDH_NOMONEY
+  }
+
+/******************************************************************************/
+/* Standard icon and bitmap definitions. Use the Icon Editor to create both   */
+/* an icon and bitmap (32x32) of your application.                            */
+/******************************************************************************/
+
+ICON    idFrameWindow  BINGO.ICO
+BITMAP  IDG_BITMAP     BINGO.BMP
+
+POINTER IDP_BINGO      BINGO.PTR
+POINTER IDP_PENCIL     PENCIL.PTR
+POINTER IDP_MARKER     MARKER.PTR
+POINTER IDP_HAPYFACE   HAPYFACE.PTR
+POINTER IDP_HAND       HAND.PTR
+POINTER IDP_SPOT       SPOT.PTR
+POINTER IDP_CHECK      CHECK.PTR
+POINTER IDP_DOLLAR     DOLLAR.PTR
+POINTER IDP_CLOVER     CLOVER.PTR
+POINTER IDP_STARTREK   STARTREK.PTR
+
+BITMAP IDBMP_X         X.BMP
+BITMAP IDBMP_Y         Y.BMP
+BITMAP IDBMP_Z         Z.BMP
+BITMAP IDBMP_M         M.BMP
+BITMAP IDBMP_N         N.BMP
+BITMAP IDBMP_H         H.BMP
+BITMAP IDBMP_DIAMOND   DIAMOND.BMP
+BITMAP IDBMP_4CORNERS  4CORNERS.BMP
+BITMAP IDBMP_CENTER    CENTER.BMP
+BITMAP IDBMP_INSQUARE  INSQUARE.BMP
+BITMAP IDBMP_OUTSQUARE OUTSQUAR.BMP
+BITMAP IDBMP_ALLNO     ALLNO.BMP
+BITMAP IDBMP_CLASSIC   CLASSIC.BMP
+BITMAP IDBMP_T         T.BMP
+BITMAP IDBMP_LUCKY7    LUCKY7.BMP
+BITMAP IDBMP_HARDAWAY  HARDAWAY.BMP
+
+BITMAP IDBMP_BINGO1    BINGO1.BMP
+BITMAP IDBMP_BINGO2    BINGO2.BMP
+BITMAP IDBMP_BINGO3    BINGO3.BMP
+BITMAP IDBMP_BINGO4    BINGO4.BMP
+BITMAP IDBMP_BINGO5    BINGO5.BMP
+
+/******************************************************************************/
+/* Include about window resource file in here too!                            */
+/******************************************************************************/
+
+rcinclude bingo.dlg
