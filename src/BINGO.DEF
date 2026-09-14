@@ -1,0 +1,9 @@
+;-------------------------------------
+; BINGO.DEF module definition file
+;-------------------------------------
+
+NAME          BINGO WINDOWAPI
+
+PROTMODE
+STACKSIZE     65536
+HEAPSIZE      4096

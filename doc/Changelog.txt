@@ -1,0 +1,83 @@
+Bingo/2 Changelog
+=================
+
+2026  Version 1.50 (OS2World port)
+------
+- Open Watcom 2.0 build system (makefile.wat, compile-wat.cmd)
+- Menu restructured: File renamed to Game, added Frame Controls to Options menu
+- Keyboard shortcuts updated to OS2World standard layout
+- BLDLEVEL string added to executable
+- About dialog replaced with standard OS2World format
+- Startup splash/logo dialog removed
+- Frame Controls toggle (Ctrl+F): hide/show title bar, sys menu, min/max, menu
+- .def file: removed DESCRIPTION, fixed STACKSIZE to 65536, added HEAPSIZE 4096
+- All compiler warnings resolved; bug fix: stray semicolon in fnDrawCard
+
+1994-08-31  Version 1.44 (original, E. L. Zapanta / IBM)
+------
+- Re-acquire shared audio device if lost (RC=70570 or 201642)
+
+1994-08-28  Version 1.43
+------
+- Fix: Selecting bottom color row in Settings selects default bingo pointer
+- Fix: Missed square mark results in incorrect bingo (fnCheckBingo bug)
+- 3D effects for bingo card and bingo board
+
+1994-08-23  Version 1.42
+------
+- Fix: Bingo sounds after quitting game
+- Fix: Draw time not changed in Settings
+- Save all Game options, # of cards and players
+- All/None push buttons in Other Cards dialog
+- Use entry fields in Score dialog
+- Support vertical bingo board option in Settings
+
+1994-08-16  Version 1.41
+------
+- Sound processing in separate thread
+- Support printing of 4 cards per page
+- Fix: Board/cards not initialized after print
+- High Scores support
+- Automatically start game when Bingo/2 invoked
+- Convert sound file from 16-bit to 8-bit
+
+1994-08-08  Version 1.4
+------
+- Bingo hall simulation: other virtual players, prize money, Chatter Box
+- Debugging support (/D=1 parameter)
+- Package .WAV files into single resource DLL (BINGOWAV.DLL)
+
+1994-07-30  Version 1.3
+------
+- More game types (Lucky 7, Hardaway)
+- Slider for Draw Time in Settings
+- Transparent marker for bingo squares in winning cards
+- Customizable mouse pointer
+- Customizable font
+- Print support
+
+1994-07-25  Version 1.22
+------
+- Load MDM.DLL at run-time
+- Single Bingo! dialog with listbox for winning cards
+
+1994-07-20  Version 1.21
+------
+- Option: no prompt for new game
+- Snazzy dialog for bingo, auto-remove if OK not pressed
+- Transparent marker (UM_MISSMARK) for missed squares
+
+1994-01-28  Version 1.2
+------
+- Digitized sound support using MMPM/2
+- Fix: clicking on Free space caused trap
+
+1993-10-01  Version 1.1
+------
+- Status boxes: number drawn, game time, game type bitmap
+- New option: show/not show Game options at startup
+- New menu: Options (Sound, Mark All)
+
+1993-04-04  Version 1.0
+------
+- First release

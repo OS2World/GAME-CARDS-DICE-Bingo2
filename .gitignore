@@ -1,0 +1,22 @@
+# Build output
+bin/*.exe
+bin/*.dll
+bin/*.obj
+bin/*.res
+bin/*.map
+
+# Build log
+compile-wat.log
+
+# Debug output
+BINGO.DBG
+
+# INI files (user settings)
+*.INI
+
+# OS/2 EA data fork files
+**/EA DATA. SF
+
+# Editor backup files
+*.bak
+*~

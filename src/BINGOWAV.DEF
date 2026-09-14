@@ -1,0 +1,10 @@
+;-------------------------------------
+; BINGOWAV.DEF module definition file
+;-------------------------------------
+
+LIBRARY BINGOWAV
+
+PROTMODE
+
+CODE LOADONCALL
+DATA LOADONCALL
