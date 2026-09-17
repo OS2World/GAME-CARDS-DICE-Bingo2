@@ -5,6 +5,8 @@ program that lets you play many different types of bingo games on your computer.
 Play up to 12 cards against up to 99 virtual hall players, with MMPM/2
 digitized sound, multiple game types, and a customizable board.
 
+![Bingo2 Screenshot](doc/Bingo2.png)
+
 ## Build
 
 Requires Open Watcom 2.0 and OS/2 Toolkit 4.5.
